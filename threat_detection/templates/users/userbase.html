@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Beautiful Side Navbar (Right)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url("{% static 'img/3.webp' %}");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+    /* Open button on the right */
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #4A90E2;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      border-radius: 8px;
+      z-index: 2;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Right sidebar styling */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0; /* moved to right */
+      background-color: #34495e;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      z-index: 1;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2); /* shadow from left side */
+    }
+
+    .sidebar a {
+      padding: 15px 30px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #ecf0f1;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #2c3e50;
+      color: #f1c40f;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 20px;
+      left: 25px; /* changed from right to left */
+      font-size: 30px;
+      color: #fff;
+    }
+
+    .closebtn:hover {
+      color: #e74c3c;
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.3s;
+    }
+
+    .overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Open Button -->
+<button class="openbtn" onclick="openNav()">☰ Menu</button>
+
+<!-- Sidebar -->
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="{% url 'userhome' %}">Home</a>
+  <a href="{% url 'graphs' %}">Graphs</a>
+  <a href="{% url 'training' %}">Training</a>
+  <a href="{% url 'predict' %}">Predict</a>
+  <a href="{% url 'home' %}">Logout</a>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" class="overlay" onclick="closeNav()"></div>
+
+{% block content %}{% endblock %}
+
+<!-- JS to toggle sidebar -->
+<script>
+  function openNav() {
+    document.getElementById("mySidebar").style.width = "250px";
+    document.getElementById("overlay").classList.add("show");
+  }
+
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("overlay").classList.remove("show");
+  }
+</script>
+
+</body>
+</html>
+

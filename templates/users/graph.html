@@ -1,0 +1,222 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .graphs-container {
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .section {
+        background: white;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        color: #007bff;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
+
+    .plot-image {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin: 15px 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .stat-card {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        border-left: 4px solid #007bff;
+    }
+
+    .stat-card h3 {
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .stat-card p {
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .model-results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    .model-results-table th,
+    .model-results-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .model-results-table th {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+
+    .model-results-table tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div class="graphs-container">
+    <h1>Cybersecurity Threat Analysis Dashboard</h1>
+
+    <!-- Outlier Detection -->
+    <div class="section">
+        <h2>Outlier Detection</h2>
+        <img src="data:image/png;base64,{{ plots.boxplot }}" alt="Box Plot" class="plot-image">
+    </div>
+
+    <!-- Categorical Distribution -->
+    <div class="section">
+        <h2>Categorical Features Distribution</h2>
+        <img src="data:image/png;base64,{{ plots.categorical_dist }}" alt="Categorical Distribution" class="plot-image">
+    </div>
+
+    <!-- Numerical Distribution -->
+    <div class="section">
+        <h2>Numerical Features Distribution</h2>
+        <img src="data:image/png;base64,{{ plots.numerical_dist }}" alt="Numerical Distribution" class="plot-image">
+    </div>
+
+    <!-- Correlation Analysis -->
+    <div class="section">
+        <h2>Correlation Analysis</h2>
+        <div class="stats-grid">
+            {% for key, value in correlations.items %}
+            <div class="stat-card">
+                <h3>{{ key }}</h3>
+                <p>{{ value }}</p>
+            </div>
+            {% endfor %}
+            <div class="stat-card">
+                <h3>Spearman Correlation</h3>
+                <p>{{ spearman }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Kendall Correlation</h3>
+                <p>{{ kendall }}</p>
+            </div>
+        </div>
+        <img src="data:image/png;base64,{{ plots.pairplot }}" alt="Pair Plot" class="plot-image">
+    </div>
+
+    <!-- Polynomial Regression -->
+    <div class="section">
+        <h2>Polynomial Regression Analysis</h2>
+        <div class="stat-card">
+            <h3>Mean Squared Error</h3>
+            <p>{{ mse }}</p>
+        </div>
+        <img src="data:image/png;base64,{{ plots.poly_regression }}" alt="Polynomial Regression" class="plot-image">
+    </div>
+
+    <!-- Chi-Square Tests -->
+    <div class="section">
+        <h2>Chi-Square Test Results</h2>
+        <div class="stats-grid">
+            {% for key, value in chi_results.items %}
+            <div class="stat-card">
+                <h3>{{ key }}</h3>
+                <p>{{ value }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% for key, value in plots.items %}
+            {% if 'chi_heatmap' in key %}
+            <img src="data:image/png;base64,{{ value }}" alt="Chi-Square Heatmap" class="plot-image">
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- ANOVA Results -->
+    <div class="section">
+        <h2>ANOVA Test Results</h2>
+        <div class="stat-card">
+            <h3>Attack Type vs Financial Loss</h3>
+            <p>{{ anova }}</p>
+        </div>
+    </div>
+
+    <!-- Trends -->
+    <div class="section">
+        <h2>Attack Trends Over Time</h2>
+        <img src="data:image/png;base64,{{ plots.attack_trend }}" alt="Attack Trends" class="plot-image">
+    </div>
+
+    <!-- Vulnerabilities by Industry -->
+    <div class="section">
+        <h2>Vulnerabilities by Industry</h2>
+        <img src="data:image/png;base64,{{ plots.vuln_industry }}" alt="Vulnerabilities" class="plot-image">
+    </div>
+
+    <!-- Financial Loss -->
+    <div class="section">
+        <h2>Average Financial Loss by Attack Type</h2>
+        <img src="data:image/png;base64,{{ plots.avg_loss }}" alt="Average Loss" class="plot-image">
+    </div>
+
+    <!-- Resolution Time -->
+    <div class="section">
+        <h2>Resolution Time by Attack Type</h2>
+        <img src="data:image/png;base64,{{ plots.resolution_time }}" alt="Resolution Time" class="plot-image">
+    </div>
+
+    <!-- Model Results -->
+    <div class="section">
+        <h2>Machine Learning Model Performance</h2>
+        <table class="model-results-table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1 Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for model, metrics in model_results.items %}
+                <tr>
+                    <td><strong>{{ model }}</strong></td>
+                    <td>{{ metrics.accuracy }}</td>
+                    <td>{{ metrics.precision }}</td>
+                    <td>{{ metrics.recall }}</td>
+                    <td>{{ metrics.f1 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

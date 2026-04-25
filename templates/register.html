@@ -1,0 +1,120 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .container {
+        width: 400px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    input, textarea {
+        padding: 10px;
+        font-size: 14px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .error-list {
+        margin-top: 20px;
+        color: red;
+        padding-left: 20px;
+    }
+
+    .errorlist {
+        color: red;
+        list-style: none;
+        padding-left: 0;
+        margin-top: 5px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="container">
+    <h2>Register</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="id_name">Full Name</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+
+        <label for="id_username">Username</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+
+        <label for="id_email">Email</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+
+        <label for="id_phone_number">Phone Number</label>
+        {{ form.phone_number }}
+        {{ form.phone_number.errors }}
+
+        <label for="id_address">Address</label>
+        {{ form.address }}
+        {{ form.address.errors }}
+
+        <label for="id_password">Password</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+
+        <label for="id_confirm_password">Confirm Password</label>
+        {{ form.confirm_password }}
+        {{ form.confirm_password.errors }}
+
+        <button type="submit">Register</button>
+
+        {% if form.non_field_errors %}
+            <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </form>
+
+    {% if messages %}
+        <ul class="error-list">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

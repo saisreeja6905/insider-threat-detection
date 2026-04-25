@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .welcome-container {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .welcome-container h1 {
+      font-size: 36px;
+      color: #2c3e50;
+      font-weight: bold;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .welcome-container h1 span {
+      color: #4A90E2;
+      font-style: italic;
+      font-weight: normal;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <div class="welcome-container">
+    <h1>
+      <span style="color: white;">Enhancing Insider Threat Detection with Machine Learning Techniques</span>
+    </h1>
+  </div>
+{% endblock content %}

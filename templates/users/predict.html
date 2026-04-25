@@ -1,0 +1,197 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block content %}
+<style>
+    
+    form {
+        width: 60%;
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 30px;
+        background: #2a2a3d;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        border-radius: 15px;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 28px;
+        color: #ffffff;
+    }
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: 500;
+        font-size: 16px;
+        color: #ccc;
+    }
+    input, select {
+        width: 100%;
+        padding: 10px 12px;
+        margin-top: 6px;
+        border: none;
+        border-radius: 8px;
+        background-color: #3b3b4f;
+        color: #fff;
+        font-size: 15px;
+        transition: background 0.3s;
+    }
+    input:focus, select:focus {
+        background-color: #4c4c65;
+        outline: none;
+    }
+    button {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-top: 30px;
+        background: linear-gradient(to right, #5c6bc0, #7986cb);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    button:hover {
+        background: linear-gradient(to right, #7986cb, #5c6bc0);
+    }
+    .result-container {
+        width: 70%;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: #2a2a3d;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+    .prediction-header {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: linear-gradient(to right, #5c6bc0, #7986cb);
+        border-radius: 12px;
+        color: #ffffff;
+        font-weight: bold;
+    }
+    .input-data {
+        background-color: #3a3a50;
+        padding: 25px;
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+    .input-data h3 {
+        color: #90caf9;
+        margin-bottom: 20px;
+        font-size: 20px;
+        border-bottom: 2px solid #5c6bc0;
+        padding-bottom: 10px;
+    }
+    .data-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #4c4c65;
+    }
+    .data-row:last-child {
+        border-bottom: none;
+    }
+    .data-label {
+        font-weight: 600;
+        color: #b0b0c5;
+        flex: 1;
+    }
+    .data-value {
+        color: #ffffff;
+        flex: 1;
+        text-align: right;
+        font-weight: 500;
+    }
+    .warning-note {
+        margin-top: 20px;
+        padding: 15px 20px;
+        background-color: #4a3f2a;
+        border-left: 4px solid #ffb74d;
+        border-radius: 8px;
+        color: #ffb74d;
+        font-weight: 500;
+    }
+</style>
+<br><br><br><br>
+<h2>Predict Cyber Attack Type</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>Country</label>
+    <input type="text" name="Country" required>
+    <label>Year</label>
+    <input type="number" name="Year" required>
+    <label>Target Industry</label>
+    <input type="text" name="Target Industry" required>
+    <label>Financial Loss (in Million $)</label>
+    <input type="number" step="0.01" name="Financial Loss" required>
+    <label>Number of Affected Users</label>
+    <input type="number" name="Number of Affected Users" required>
+    <label>Attack Source</label>
+    <input type="text" name="Attack Source" required>
+    <label>Security Vulnerability Type</label>
+    <input type="text" name="Security Vulnerability Type" required>
+    <label>Defense Mechanism Used</label>
+    <input type="text" name="Defense Mechanism Used" required>
+    <label>Incident Resolution Time (in Hours)</label>
+    <input type="number" step="0.01" name="Incident Resolution Time" required>
+    <button type="submit">Predict Attack Type</button>
+</form>
+
+{% if prediction %}
+<div class="result-container">
+    <div class="prediction-header">
+        Predicted Attack Type: {{ prediction }}
+    </div>
+    
+    {% if input_data %}
+    <div class="input-data">
+        <h3>Input Data Summary</h3>
+        <div class="data-row">
+            <span class="data-label">Country:</span>
+            <span class="data-value">{{ input_data.country|default:"N/A" }}</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Year:</span>
+            <span class="data-value">{{ input_data.year|default:"N/A" }}</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Target Industry:</span>
+            <span class="data-value">{{ input_data.target_industry|default:"N/A" }}</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Financial Loss:</span>
+            <span class="data-value">${{ input_data.financial_loss|default:"N/A" }} Million</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Number of Affected Users:</span>
+            <span class="data-value">{{ input_data.affected_users|default:"N/A" }}</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Attack Source:</span>
+            <span class="data-value">{{ input_data.attack_source|default:"N/A" }}</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Security Vulnerability Type:</span>
+            <span class="data-value">{{ input_data.vulnerability_type|default:"N/A" }}</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Defense Mechanism Used:</span>
+            <span class="data-value">{{ input_data.defense_mechanism|default:"N/A" }}</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Incident Resolution Time:</span>
+            <span class="data-value">{{ input_data.resolution_time|default:"N/A" }} Hours</span>
+        </div>
+    </div>
+    {% endif %}
+    
+
+</div>
+{% endif %}
+{% endblock %}

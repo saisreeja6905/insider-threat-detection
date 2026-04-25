@@ -1,0 +1,67 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #1e1e2f;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ffffff;
+    }
+
+    .results-table {
+        width: 70%;
+        margin: 40px auto;
+        border-collapse: collapse;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        background-color: #2e2e42;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .results-table th, .results-table td {
+        padding: 15px;
+        text-align: center;
+        color: #ffffff;
+    }
+
+    .results-table th {
+        background-color: #3e3e5e;
+        font-size: 18px;
+    }
+
+    .results-table tr:nth-child(even) {
+        background-color: #383855;
+    }
+
+    .results-table tr:hover {
+        background-color: #505070;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 28px;
+        color: #ffffff;
+    }
+</style>
+
+<h2>Model Accuracy Results</h2>
+
+<table class="results-table">
+    <thead>
+        <tr>
+            <th>Model Name</th>
+            <th>Accuracy (%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for model, accuracy in results.items %}
+        <tr>
+            <td>{{ model }}</td>
+            <td>{{ accuracy }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

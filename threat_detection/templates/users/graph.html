@@ -1,0 +1,74 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .admin-container {
+    text-align: center;
+    padding: 60px 30px;
+    background-color: rgba(255, 255, 255, 0.1); /* translucent overlay */
+    margin: 60px auto;
+    border-radius: 20px;
+    max-width: 800px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .admin-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  }
+
+  .admin-container h1 {
+    color: #f1c40f;
+    font-size: 40px;
+    margin-bottom: 15px;
+  }
+
+  .admin-container h3 {
+    color: #ecf0f1;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .graph-section {
+    background-color: rgba(255, 255, 255, 0.15);
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 700px;
+    text-align: center;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .graph-section h1 {
+    color: #00ffcc;
+    font-size: 28px;
+  }
+
+  @media (max-width: 768px) {
+    .admin-container, .graph-section {
+      padding: 40px 20px;
+      margin: 30px 10px;
+    }
+
+    .admin-container h1 {
+      font-size: 30px;
+    }
+
+    .graph-section h1 {
+      font-size: 22px;
+    }
+  }
+</style>
+
+<div class="admin-container">
+  <h1>Welcome to User Page</h1>
+  <h3>Enhancing Insider Threat Detection with Machine Learning Techniques</h3>
+</div>
+
+<div class="graph-section">
+  <h1>Implementation of Graphs Done</h1>
+</div>
+{% endblock %}

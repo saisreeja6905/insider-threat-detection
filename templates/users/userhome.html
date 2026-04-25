@@ -1,0 +1,34 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+
+
+  .admin-container {
+    text-align: center;
+    padding: 100px 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* translucent overlay */
+    margin: 50px auto;
+    border-radius: 15px;
+    max-width: 800px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  }
+
+  .admin-container h1 {
+    color: #f1c40f;
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+
+  .admin-container h3 {
+    color: #ecf0f1;
+    font-weight: normal;
+  }
+</style>
+
+<div class="admin-container">
+  <h1>Welcome to User Page</h1>
+  <h3>Enhancing Insider Threat Detection with Machine Learning Techniques</h3>
+</div>
+{% endblock %}
